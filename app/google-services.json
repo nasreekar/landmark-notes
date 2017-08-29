@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "634530011282",
+    "firebase_url": "https://landmark-notes.firebaseio.com",
+    "project_id": "landmark-notes",
+    "storage_bucket": "landmark-notes.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634530011282:android:6b8f27b668889582",
+        "android_client_info": {
+          "package_name": "com.abhijith.home.landmark_notes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634530011282-1q34s6srmeqmf8oq0if4s576rbkdrs2u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abhijith.home.landmark_notes",
+            "certificate_hash": "56087c9fe1705743d500156fa566a1f936c2aec9"
+          }
+        },
+        {
+          "client_id": "634530011282-s7c7cguel4glpi4s2dhbip50187dgckt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-QUbad8nBf3lPptxVkxwTm6KCECVxR_8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634530011282-s7c7cguel4glpi4s2dhbip50187dgckt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
