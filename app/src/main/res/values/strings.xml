@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Landmark_Notes</string>
+    <string name="app_name">Landmark Notes</string>
     <string name="title_activity_maps">Map</string>
 
     <!--  "Add new note" xml Strings -->
@@ -25,5 +25,7 @@
     <!-- "Notes List - list_layout" Strings -->
     <string name="tvListTitle">Title</string>
     <string name="tvListDescription">Description</string>
+
+    <string name="addNote">Add Note</string>
 
 </resources>
