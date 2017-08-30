@@ -26,10 +26,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class MainActivity extends AppCompatActivity {
 
     SignInButton button;
-    FirebaseAuth mAuth;
+
+    private FirebaseAuth mAuth;
     private final static int RC_SIGN_IN = 2;
-    GoogleApiClient mGoogleApiClient;
-    FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
     //checks for already logged in user

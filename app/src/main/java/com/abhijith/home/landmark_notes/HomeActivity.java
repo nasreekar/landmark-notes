@@ -16,30 +16,37 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import Models.Notes;
+import Models.NotesList;
 
 public class HomeActivity extends AppCompatActivity {
 
     Button logout;
+    Button addNote;
+
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
-
-    Button addNote;
     DatabaseReference databaseNotes;
 
     //Form Details
@@ -55,10 +62,39 @@ public class HomeActivity extends AppCompatActivity {
     String latitude,longitude;
     String finalLocation;
 
+    //Notes List View
+    ListView listViewNotes;
+    List<Notes> notesList;
+
     @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
+
+        //attach value event listener to database object
+        databaseNotes.addValueEventListener(new ValueEventListener() {
+            //executed every-time we change anything in database
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                notesList.clear();
+
+                for(DataSnapshot notesSnapshot: dataSnapshot.getChildren()){
+                    Notes note = notesSnapshot.getValue(Notes.class);
+                    Log.i("THE_CURRENT_NOTE:::", note.toString());
+                    notesList.add(note);
+                }
+
+                NotesList adap = new NotesList(HomeActivity.this,notesList);
+                listViewNotes.setAdapter(adap); //attaching it to notes list view
+
+            }
+            //will be executed if there is any error
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -108,9 +144,17 @@ public class HomeActivity extends AppCompatActivity {
 
         //getting the current location and displaying it on location text view
         ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-        getLocationDetails();
-        
 
+        // list view of notes saved in database
+        listViewNotes = (ListView)findViewById(R.id.lvNotes);
+        notesList = new ArrayList<>();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getLocationDetails();
     }
 
     private void getLocationDetails() {

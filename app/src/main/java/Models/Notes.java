@@ -79,4 +79,7 @@ public class Notes {
         this.latitude = latitude;
         this.longitute = longitute;
     }
+
+    public Notes() {
+    }
 }

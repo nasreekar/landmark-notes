@@ -20,4 +20,10 @@
     <string name="alertPositive">GOT IT!</string>
     <string name="alertNegative">NO LA!</string>
     <string name="alertDescription">Please turn on Location Services.</string>
+
+
+    <!-- "Notes List - list_layout" Strings -->
+    <string name="tvListTitle">Title</string>
+    <string name="tvListDescription">Description</string>
+
 </resources>
