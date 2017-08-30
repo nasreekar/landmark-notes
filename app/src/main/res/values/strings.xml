@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Landmark_Notes</string>
     <string name="title_activity_maps">Map</string>
+
+    <!--  "Add new note" xml Strings -->
+    <string name="etTitle">Title</string>
+    <string name="etDescription">Description</string>
+    <string name="tvLocation">Location</string>
+    <string name="tvDate">Date</string>
+
+    <string name="btnLogout">Log Out</string>
+    <string name="btnAddNote">Add Note</string>
+
+    <!-- "Add new note" form Strings -->
+    <string name="formDefaultTitle">New Document</string>
+
+
+    <!-- "GPS Alert Dialog" Strings -->
+    <string name="alertTitle">LOCATION NOT FOUND!</string>
+    <string name="alertPositive">GOT IT!</string>
+    <string name="alertNegative">NO LA!</string>
+    <string name="alertDescription">Please turn on Location Services.</string>
 </resources>

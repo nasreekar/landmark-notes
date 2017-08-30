@@ -1,7 +1,5 @@
 package Models;
 
-import java.util.Date;
-
 /**
  * Created by home on 29/8/17.
  */
@@ -11,7 +9,7 @@ public class Notes {
     private String email;
     private String title;
     private String description;
-    private Date date;
+    private String date;
     private String location;
     private String latitude;
     private String longitute;
@@ -40,11 +38,11 @@ public class Notes {
         this.description = description;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -72,7 +70,7 @@ public class Notes {
         this.longitute = longitute;
     }
 
-    public Notes(String title, String description,String email, Date date, String location, String latitude, String longitute) {
+    public Notes(String title, String description,String email, String date, String location, String latitude, String longitute) {
         this.email = email;
         this.title = title;
         this.description = description;
