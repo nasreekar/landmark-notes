@@ -6,7 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abhijith.home.landmark_notes.R;
 
@@ -38,9 +40,16 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        Notes n = notesList.get(position);
+        final Notes n = notesList.get(position);
         holder.tvListTitle.setText(n.getTitle());
         holder.tvListDescription.setText(n.getDescription());
+
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,"You clicked : "+ n.getTitle(),Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -53,12 +62,15 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
 
         public TextView tvListTitle;
         public TextView tvListDescription;
+        public RelativeLayout relativeLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             tvListTitle = (TextView)itemView.findViewById(R.id.tvListTitle);
             tvListDescription = (TextView)itemView.findViewById(R.id.tvListDescription);
+
+            relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeRecyclerLayout);
         }
     }
 }
