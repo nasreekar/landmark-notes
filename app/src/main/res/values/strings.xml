@@ -26,6 +26,10 @@
     <string name="tvListTitle">Title</string>
     <string name="tvListDescription">Description</string>
 
+    <!-- "menu_add.xml" strings -->
     <string name="addNote">Add Note</string>
+    <string name="mygeoNotes">My Geo-Notes</string>
+    <string name="allgeoNotes">All Geo-Notes</string>
+    <string name="logout">LogOut</string>
 
 </resources>

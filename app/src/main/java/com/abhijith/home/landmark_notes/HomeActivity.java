@@ -8,8 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +25,7 @@ import Models.NotesList;
 
 public class HomeActivity extends AppCompatActivity {
 
-    Button logout;
+//    Button logout;
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -75,7 +73,7 @@ public class HomeActivity extends AppCompatActivity {
 
         databaseNotes = FirebaseDatabase.getInstance().getReference("notes"); //parent node
 
-        logout = (Button)findViewById(R.id.logoutBtn);
+//        logout = (Button)findViewById(R.id.logoutBtn);
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -87,12 +85,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-            }
-        });
+//        logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mAuth.signOut();
+//            }
+//        });
 
         // list view of notes saved in database
         listViewNotes = (ListView)findViewById(R.id.lvNotes);
@@ -105,14 +103,24 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
+    public void logoutClicked(){
+        mAuth.signOut();
+    }
+
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_note:
                 startActivity(new Intent(HomeActivity.this, AddNoteActivity.class));
                 return true;
-//            case R.id.help:
-//                startActivity(new Intent(this, Help.class));
-//                return true;
+            case R.id.action_my_geo_notes:
+                startActivity(new Intent(this, MapsActivity.class));
+                return true;
+            case R.id.action_all_geo_notes:
+                startActivity(new Intent(this, MapsActivity.class));
+                return true;
+            case R.id.logout:
+                logoutClicked();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

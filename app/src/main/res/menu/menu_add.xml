@@ -9,4 +9,26 @@
         android:title="@string/addNote"
         tools:ignore="AppCompatResource"
         compat:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_my_geo_notes"
+        android:orderInCategory="101"
+        android:title="@string/mygeoNotes"
+        tools:ignore="AppCompatResource"
+        compat:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_all_geo_notes"
+        android:orderInCategory="102"
+        android:title="@string/allgeoNotes"
+        tools:ignore="AppCompatResource"
+        compat:showAsAction="never"/>
+
+    <item
+        android:id="@+id/logout"
+        android:orderInCategory="103"
+        android:title="@string/logout"
+        tools:ignore="AppCompatResource"
+        compat:showAsAction="never"/>
+
 </menu>

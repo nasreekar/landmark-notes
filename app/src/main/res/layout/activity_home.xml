@@ -12,19 +12,19 @@
     <ListView
         android:id="@+id/lvNotes"
         android:layout_width="match_parent"
-        android:layout_height="285dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.68"
         tools:layout_editor_absoluteX="14dp"
-        tools:layout_editor_absoluteY="134dp"
-        android:layout_weight="0.68" />
+        tools:layout_editor_absoluteY="134dp" />
 
-    <Button
-        android:id="@+id/logoutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/holo_red_light"
-        android:text="@string/btnLogout"
-        android:textColor="@android:color/white"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="10dp"/>
+    <!--<Button-->
+        <!--android:id="@+id/logoutBtn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:backgroundTint="@android:color/holo_red_light"-->
+        <!--android:text="@string/btnLogout"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_marginTop="40dp"-->
+        <!--android:layout_marginBottom="10dp"/>-->
 </LinearLayout>
