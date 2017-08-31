@@ -9,6 +9,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -50,6 +51,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng loc = new LatLng( Double.valueOf(notz.getLatitude()),  Double.valueOf(notz.getLongitute()));
         mMap.addMarker(new MarkerOptions().position(loc).title(notz.getTitle()));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(loc)
+                .zoom(15).build();
+        //Zoom in and animate the camera.
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
