@@ -121,6 +121,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.logout:
                 logoutClicked();
                 return true;
+            case R.id.recycle:
+                startActivity(new Intent(this, RecyclerNoteListActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

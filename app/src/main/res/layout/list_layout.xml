@@ -44,17 +44,18 @@ android:padding="6dip" >
     android:text="@string/tvListDescription"
     android:textSize="12sp" />
 
-<TextView
-    android:id="@+id/tvListTitle"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_above="@id/tvListTitle"
-    android:layout_alignParentRight="true"
-    android:layout_alignParentTop="true"
-    android:layout_alignWithParentIfMissing="true"
-    android:layout_toRightOf="@id/icon"
-    android:gravity="center_vertical"
-    android:text="@string/tvListTitle"
-    android:textSize="16sp" />
+    <TextView
+        android:id="@+id/tvListTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/tvListTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/icon"
+        android:gravity="center_vertical"
+        android:text="@string/tvListTitle"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>
