@@ -172,7 +172,7 @@ public class AddNoteActivity extends AppCompatActivity {
         String userEmail = mAuth.getCurrentUser().getEmail();
 
         if(TextUtils.isEmpty(heading)){
-            heading = "New Document";
+            Toast.makeText(AddNoteActivity.this,"Title cannot be empty",Toast.LENGTH_SHORT).show();
         }else {
             String id = databaseNotes.push().getKey(); //auto generated id by firebase
             Notes note = new Notes(heading, desc,userEmail, currentDate, finalLocation, latitude, longitude);

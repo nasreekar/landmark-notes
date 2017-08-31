@@ -18,7 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import Models.MyRecyclerAdapter;
@@ -54,6 +59,14 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
                     Log.i("THE_CURRENT_NOTE:::", note.toString());
                     listitems.add(note);
                 }
+
+                //to sort the list based on latest addition by time
+                Collections.sort(listitems,new Comparator<Notes>(){
+                    @Override
+                    public int compare(Notes o1, Notes o2) {
+                        return deserializeStringDate(o2.getDate()).compareTo(deserializeStringDate(o1.getDate()));
+                    }
+                });
 
                 adapter = new MyRecyclerAdapter(RecyclerNoteListActivity.this,listitems);
                 recyclerView.setAdapter(adapter);
@@ -118,5 +131,18 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    //method to serialize string date to java.util.date to sort the list
+    public Date deserializeStringDate(String drt){
+        Date d = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            d = dateFormat.parse(drt);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return d;
     }
 }
