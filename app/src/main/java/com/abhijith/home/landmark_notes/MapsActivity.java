@@ -47,14 +47,36 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng loc = new LatLng( Double.valueOf(notz.getLatitude()),  Double.valueOf(notz.getLongitute()));
-        mMap.addMarker(new MarkerOptions().position(loc).title(notz.getTitle()));
+        Double lat;
+        Double longi;
+        final String mTitle;
+        final String desc;
+        final String place;
+
+        //if notz is empty, then set the maps with default values
+        if(notz==null){
+            lat = -33.8718356;
+            longi = 151.1521636;
+            mTitle = "Sydney";
+            desc = "Default Description";
+            place = "Sydney";
+
+        }else{
+            lat = Double.valueOf(notz.getLatitude());
+            longi = Double.valueOf(notz.getLongitute());
+            mTitle = notz.getTitle();
+            desc = notz.getDescription();
+            place = notz.getLocation();
+        }
+
+        // Add a marker in correct location and move the camera
+        LatLng loc = new LatLng( lat,longi);
+        mMap.addMarker(new MarkerOptions().position(loc).title(mTitle));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(loc)
-                .zoom(15).build();
+                .zoom(12).build();
         //Zoom in and animate the camera.
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
@@ -62,8 +84,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(Marker marker) {
                 AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this).create();
-                alertDialog.setTitle("More Details of " + "\""+ notz.getTitle()+"\"");
-                alertDialog.setMessage(notz.getDescription() + "\n \n" + notz.getLocation());
+                alertDialog.setTitle("More Details of " + "\""+ mTitle+"\"");
+                alertDialog.setMessage(desc + "\n \n" + place);
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Got It!",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
