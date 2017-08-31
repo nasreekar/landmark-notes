@@ -31,11 +31,4 @@
         tools:ignore="AppCompatResource"
         compat:showAsAction="never"/>
 
-    <item
-        android:id="@+id/recycle"
-        android:orderInCategory="104"
-        android:title="Recycler View"
-        tools:ignore="AppCompatResource"
-        compat:showAsAction="never"/>
-
 </menu>
