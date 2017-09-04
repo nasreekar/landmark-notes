@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +35,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
     DatabaseReference databaseNotes;
+    Gson gson = new Gson();
 
 
     private RecyclerView recyclerView;
@@ -123,7 +125,10 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
                 startActivity(new Intent(this, MapsActivity.class));
                 return true;
             case R.id.action_all_geo_notes:
-                startActivity(new Intent(this, MapsActivity.class));
+                Intent intent = new Intent(this, MapsActivity.class);
+                intent.putExtra("tag", "all_notes");
+                intent.putExtra("note_list", gson.toJson(listitems));
+                startActivity(intent);
                 return true;
             case R.id.logout:
                 logoutClicked();

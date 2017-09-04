@@ -1,12 +1,17 @@
 package Models;
 
+import android.text.TextUtils;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
+
 import java.io.Serializable;
 
 /**
  * Created by home on 29/8/17.
  */
 
-public class Notes implements Serializable{
+public class Notes implements Serializable, ClusterItem{
 
     private String email;
     private String title;
@@ -24,8 +29,22 @@ public class Notes implements Serializable{
         this.email = email;
     }
 
+    @Override
+    public LatLng getPosition() {
+        if(!TextUtils.isEmpty(latitude) && !TextUtils.isEmpty(longitute)) {
+            return new LatLng(Double.valueOf(latitude), Double.valueOf(longitute));
+        }
+        return null;
+    }
+
+    @Override
     public String getTitle() {
         return title;
+    }
+
+    @Override
+    public String getSnippet() {
+        return description;
     }
 
     public void setTitle(String title) {

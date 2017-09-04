@@ -95,7 +95,8 @@ public class AddNoteActivity extends AppCompatActivity {
         date.setText(currentDate);
 
         //getting the current location and displaying it on location text view
-        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+        ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_LOCATION);
     }
 
     @Override

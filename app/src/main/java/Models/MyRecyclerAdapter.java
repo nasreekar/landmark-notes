@@ -50,6 +50,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
             public void onClick(View v) {
                 //Toast.makeText(context,"You clicked : "+ n.getTitle(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, MapsActivity.class);
+                intent.putExtra("tag", "single_note");
                 intent.putExtra("serialize_object_data", n);
                 context.startActivity(intent);
             }

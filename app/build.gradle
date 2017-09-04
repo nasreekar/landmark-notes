@@ -26,6 +26,8 @@ dependencies {
     })
     //modified to 25.3.1 to match the appcompact version
     //modified to 25.3.1 to match the appcompact version
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.maps.android:android-maps-utils:0.5'
     compile 'com.google.firebase:firebase-auth:11.2.0'
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'

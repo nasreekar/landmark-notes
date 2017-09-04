@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -13,13 +15,20 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.google.maps.android.clustering.ClusterManager;
+
+import org.w3c.dom.Text;
+
+import java.util.List;
 
 import Models.Notes;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    Notes notz;
+    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +38,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        notz = (Notes) getIntent().getSerializableExtra("serialize_object_data");
     }
 
 
@@ -47,6 +54,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+        String tag = getIntent().getStringExtra("tag");
+
+        if(tag.contentEquals("all_notes")){
+
+            List<Notes> noteList = getNoteListFromIntent();
+            if(noteList != null){
+                if(noteList.size() > 0){
+                    showClusterMapView(noteList, mMap);
+                }
+            }
+
+        }else if(tag.contentEquals("single_note")){
+
+            Notes note = (Notes) getIntent().getSerializableExtra("serialize_object_data");
+            if(note != null){
+                showSingleNoteOnMap(note, mMap);
+            }
+        }
+
+
+    }
+
+    private void showSingleNoteOnMap(Notes note, GoogleMap mMap) {
         Double lat;
         Double longi;
         final String mTitle;
@@ -54,7 +84,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final String place;
 
         //if notz is empty, then set the maps with default values
-        if(notz==null){
+        if(note==null){
             lat = -33.8718356;
             longi = 151.1521636;
             mTitle = "Sydney";
@@ -62,11 +92,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             place = "Sydney";
 
         }else{
-            lat = Double.valueOf(notz.getLatitude());
-            longi = Double.valueOf(notz.getLongitute());
-            mTitle = notz.getTitle();
-            desc = notz.getDescription();
-            place = notz.getLocation();
+            lat = Double.valueOf(note.getLatitude());
+            longi = Double.valueOf(note.getLongitute());
+            mTitle = note.getTitle();
+            desc = note.getDescription();
+            place = note.getLocation();
         }
 
         // Add a marker in correct location and move the camera
@@ -97,5 +127,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return true;
             }
         });
+    }
+
+    private void showClusterMapView(List<Notes> noteList, GoogleMap mMap) {
+
+        ClusterManager<Notes> mClusterManager = new ClusterManager<>(this, mMap);
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+        mMap.setOnInfoWindowClickListener(mClusterManager);
+        addNoteItemsWhichHasLatLng(mClusterManager, noteList);
+        //mClusterManager.addItems(noteList);
+        mClusterManager.cluster();
+    }
+
+    private void addNoteItemsWhichHasLatLng(ClusterManager<Notes> mClusterManager, List<Notes> noteList) {
+        for(Notes note : noteList){
+            if(note.getLocation() != null){
+                mClusterManager.addItem(note);
+            }
+        }
+    }
+
+    private List<Notes> getNoteListFromIntent(){
+        String intentString = getIntent().getStringExtra("note_list");
+
+        if(!TextUtils.isEmpty(intentString)){
+            try{
+                TypeToken<List<Notes>> token = new TypeToken<List<Notes>>() {};
+                return gson.fromJson(intentString, token.getType());
+            }catch (Exception ex){
+                Log.e("MapsActivity", "Failed to get noteList from intent");
+            }
+        }
+
+        return null;
     }
 }
