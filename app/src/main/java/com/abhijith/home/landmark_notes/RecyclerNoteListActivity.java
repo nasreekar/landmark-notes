@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +44,9 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
 
     private List<Notes> listitems;
+    private List<Notes> myListitems;
+
+    private TextView defaultText;
 
     @Override
     protected void onStart() {
@@ -70,8 +75,16 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
                     }
                 });
 
-                adapter = new MyRecyclerAdapter(RecyclerNoteListActivity.this,listitems);
-                recyclerView.setAdapter(adapter);
+                myListitems = getMyList(listitems); //getting only current user notes
+
+                if(myListitems.size()!= 0)
+                {
+                    defaultText.setVisibility(View.GONE);
+                    adapter = new MyRecyclerAdapter(RecyclerNoteListActivity.this,myListitems);
+                    recyclerView.setAdapter(adapter);
+                }else{
+                    defaultText.setVisibility(View.VISIBLE);
+                }
 
             }
             //will be executed if there is any error
@@ -86,6 +99,8 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler_note_list);
+
+        defaultText = (TextView)findViewById(R.id.rvTextView);
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerViewList);
         recyclerView.setHasFixedSize(true);
@@ -122,7 +137,10 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
                 startActivity(new Intent(RecyclerNoteListActivity.this, AddNoteActivity.class));
                 return true;
             case R.id.action_my_geo_notes:
-                startActivity(new Intent(this, MapsActivity.class));
+                Intent myIntent = new Intent(this, MapsActivity.class);
+                myIntent.putExtra("tag", "my_notes");
+                myIntent.putExtra("note_list", gson.toJson(myListitems));
+                startActivity(myIntent);
                 return true;
             case R.id.action_all_geo_notes:
                 Intent intent = new Intent(this, MapsActivity.class);
@@ -149,5 +167,23 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return d;
+    }
+
+    //function to get current user details based on email
+    public List<Notes> getMyList(List<Notes> nonFiltered){
+        ArrayList<Notes> myList = new ArrayList<>();
+        for(Notes myPoint : nonFiltered) {
+            //Log.i("MY POINT EMAIL: " , myPoint.getEmail());
+            if(myPoint.getEmail().equals(mAuth.getCurrentUser().getEmail())) {
+               myList.add(myPoint);
+            }
+        }
+        if(null != myList) {
+            Log.i("MY LIST",String.valueOf(myList.size()));
+            return myList;
+        } else {
+            System.out.println("Could not found objects in list");
+        }
+        return myList;
     }
 }

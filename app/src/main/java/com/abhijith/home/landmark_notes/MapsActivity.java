@@ -19,8 +19,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.maps.android.clustering.ClusterManager;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
 import Models.Notes;
@@ -56,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         String tag = getIntent().getStringExtra("tag");
 
+        // all notes on map
         if(tag.contentEquals("all_notes")){
 
             List<Notes> noteList = getNoteListFromIntent();
@@ -64,8 +63,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     showClusterMapView(noteList, mMap);
                 }
             }
-
-        }else if(tag.contentEquals("single_note")){
+        // my notes on map
+        }else if(tag.contentEquals("my_notes")){
+            List<Notes> myNoteList = getNoteListFromIntent();
+            if(myNoteList != null){
+                if(myNoteList.size() > 0){
+                    showClusterMapView(myNoteList, mMap);
+                }
+            }
+        }
+        //single note on map
+        else if(tag.contentEquals("single_note")){
 
             Notes note = (Notes) getIntent().getSerializableExtra("serialize_object_data");
             if(note != null){
