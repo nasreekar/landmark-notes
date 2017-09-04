@@ -3,9 +3,11 @@ package com.abhijith.home.landmark_notes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,7 +43,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
 
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private MyRecyclerAdapter adapter;
 
     private List<Notes> listitems;
     private List<Notes> myListitems;
@@ -124,6 +126,10 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_add, menu);
+
+        MenuItem search = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        search(searchView);
         return true;
     }
 
@@ -185,5 +191,24 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
             System.out.println("Could not found objects in list");
         }
         return myList;
+    }
+
+    //search list items
+    private void search(SearchView searchView) {
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                adapter.getFilter().filter(newText);
+                return true;
+            }
+        });
     }
 }

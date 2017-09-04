@@ -7,26 +7,31 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.abhijith.home.landmark_notes.MapsActivity;
 import com.abhijith.home.landmark_notes.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by home on 31/8/17.
  */
 
-public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder> {
+public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder> implements Filterable {
 
     private Activity context;
     private List<Notes> notesList;
+    private List<Notes> mFilteredList;
 
     public MyRecyclerAdapter(Activity context, List<Notes> notesList) {
         this.context = context;
         this.notesList = notesList;
+        this.mFilteredList = notesList;
     }
 
     @Override
@@ -60,7 +65,46 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return notesList.size();
+        return mFilteredList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String charString = charSequence.toString();
+
+                if (charString.isEmpty()) {
+
+                    mFilteredList = notesList;
+                } else {
+
+                    ArrayList<Notes> filteredList = new ArrayList<>();
+
+                    for (Notes androidVersion : notesList) {
+
+                        if (androidVersion.getTitle().toLowerCase().contains(charString) || androidVersion.getDescription().toLowerCase().contains(charString)) {
+
+                            filteredList.add(androidVersion);
+                        }
+                    }
+
+                    mFilteredList = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mFilteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mFilteredList = (ArrayList<Notes>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
