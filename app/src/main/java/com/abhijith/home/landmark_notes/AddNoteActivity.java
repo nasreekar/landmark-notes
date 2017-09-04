@@ -85,7 +85,7 @@ public class AddNoteActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() == null){
-                    startActivity(new Intent(AddNoteActivity.this, MainActivity.class));
+                    startActivity(new Intent(AddNoteActivity.this, LoginActivity.class));
                 }
             }
         };

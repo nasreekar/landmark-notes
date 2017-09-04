@@ -114,7 +114,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() == null){
-                    startActivity(new Intent(RecyclerNoteListActivity.this, MainActivity.class));
+                    startActivity(new Intent(RecyclerNoteListActivity.this, LoginActivity.class));
                 }
             }
         };

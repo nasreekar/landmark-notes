@@ -23,7 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     SignInButton button;
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
-                    startActivity(new Intent(MainActivity.this, RecyclerNoteListActivity.class));
+                    startActivity(new Intent(LoginActivity.this, RecyclerNoteListActivity.class));
                     finish();
                 }
             }
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 .enableAutoManage(this /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(MainActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     // Google Sign In failed, update UI appropriately
                     // ...
 
-                    Toast.makeText(MainActivity.this,"Auth went wrong",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,"Auth went wrong",Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
