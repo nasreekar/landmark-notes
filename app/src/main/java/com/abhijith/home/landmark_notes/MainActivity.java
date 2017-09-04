@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() != null){
                     startActivity(new Intent(MainActivity.this, RecyclerNoteListActivity.class));
+                    finish();
                 }
             }
         };
@@ -104,13 +105,13 @@ public class MainActivity extends AppCompatActivity {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
-                // Google Sign In failed, update UI appropriately
-                // ...
+                    // Google Sign In failed, update UI appropriately
+                    // ...
 
-                Toast.makeText(MainActivity.this,"Auth went wrong",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this,"Auth went wrong",Toast.LENGTH_SHORT).show();
+                }
             }
         }
-    }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
