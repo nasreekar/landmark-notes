@@ -46,7 +46,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        final Notes n = notesList.get(position);
+        final Notes n = mFilteredList.get(position);
         holder.tvListTitle.setText(n.getTitle());
         holder.tvListDescription.setText(n.getDescription());
 
