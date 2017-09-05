@@ -80,8 +80,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 showSingleNoteOnMap(note, mMap);
             }
         }
-
-
     }
 
     private void showSingleNoteOnMap(Notes note, GoogleMap mMap) {
@@ -91,20 +89,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         final String desc;
         final String place;
 
-        //if notz is empty, then set the maps with default values
-        if(note==null){
-            lat = 1.278985;
-            longi = 103.8429418;
-            mTitle = "Tigerspike";
-            desc = "Software Company";
-            place = "Singapore";
-        }else{
-            lat = Double.valueOf(note.getLatitude());
-            longi = Double.valueOf(note.getLongitute());
-            mTitle = note.getTitle();
-            desc = note.getDescription();
-            place = note.getLocation();
-        }
+        lat = Double.valueOf(note.getLatitude());
+        longi = Double.valueOf(note.getLongitute());
+        mTitle = note.getTitle();
+        desc = note.getDescription();
+        place = note.getLocation();
 
         // Add a marker in correct location and move the camera
         LatLng loc = new LatLng( lat,longi);

@@ -35,4 +35,9 @@
     <!-- "recycler view default text view" strings -->
     <string name="emptyText">"No Notes To Display"</string>
 
+    <!-- "Default Note location" strings(In case we are unable to trace location) -->
+    <string name="dfLat">1.279374</string>
+    <string name="dfLon">103.8438739</string>
+    <string name="dfFinalLocation">44 Tg Pagar Rd, Singapore</string>
+
 </resources>

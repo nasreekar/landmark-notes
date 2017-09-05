@@ -134,16 +134,11 @@ public class AddNoteActivity extends AppCompatActivity {
 
                 //To get the location name based on latitude and longitude
                 String loc = getCityName(lati,longi);
-                if(TextUtils.isEmpty(loc)){
-                    locationTv.setText("Singapore"); // if the user clicks "No" in alert dialog,we use default text as Singapore
-
-                }
-                else{
-                    locationTv.setText(loc);
-                }
+                locationTv.setText(loc);
 
             }else{
-                Toast.makeText(this,"Unable to Trace your location",Toast.LENGTH_SHORT).show();
+                locationTv.setText(getString(R.string.dfFinalLocation));
+                Toast.makeText(this,"Unable to Trace your location, setting to default",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -157,12 +152,13 @@ public class AddNoteActivity extends AppCompatActivity {
                     public void onClick(final DialogInterface dialog, final int id) {
                         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                     }
+                })
+                .setNegativeButton(R.string.alertNegative, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        getLocation();
+                        dialog.cancel();
+                    }
                 });
-//                .setNegativeButton(R.string.alertNegative, new DialogInterface.OnClickListener() {
-//                    public void onClick(final DialogInterface dialog, final int id) {
-//                        dialog.cancel();
-//                    }
-//                });
         final AlertDialog alert = builder.create();
         alert.show();
     }
@@ -176,6 +172,13 @@ public class AddNoteActivity extends AppCompatActivity {
             Toast.makeText(AddNoteActivity.this,"Title cannot be empty",Toast.LENGTH_SHORT).show();
         }else {
             String id = databaseNotes.push().getKey(); //auto generated id by firebase
+
+            //In case location was not able to trace, use defaults
+            if(TextUtils.isEmpty(finalLocation) && TextUtils.isEmpty(latitude) && TextUtils.isEmpty(longitude)){
+                finalLocation = getString(R.string.dfFinalLocation);
+                latitude = getString(R.string.dfLat);
+                longitude = getString(R.string.dfLon);
+            }
             Notes note = new Notes(heading, desc,userEmail, currentDate, finalLocation, latitude, longitude);
             databaseNotes.child(id).setValue(note);
             Toast.makeText(this, "Note added", Toast.LENGTH_SHORT).show();

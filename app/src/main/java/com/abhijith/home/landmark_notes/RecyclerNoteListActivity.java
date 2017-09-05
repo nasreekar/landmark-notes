@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,6 +50,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
     private List<Notes> myListitems;
 
     private TextView defaultText;
+    private ProgressBar pgBar;
 
     @Override
     protected void onStart() {
@@ -82,6 +84,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
                 if(myListitems.size()!= 0)
                 {
                     defaultText.setVisibility(View.GONE);
+                    pgBar.setVisibility(View.GONE);
                     adapter = new MyRecyclerAdapter(RecyclerNoteListActivity.this,myListitems);
                     recyclerView.setAdapter(adapter);
                 }else{
@@ -103,6 +106,8 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recycler_note_list);
 
         defaultText = (TextView)findViewById(R.id.rvTextView);
+        pgBar = (ProgressBar)findViewById(R.id.progressBar);
+        pgBar.setVisibility(View.VISIBLE);
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerViewList);
         recyclerView.setHasFixedSize(true);
