@@ -93,12 +93,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //if notz is empty, then set the maps with default values
         if(note==null){
-            lat = -33.8718356;
-            longi = 151.1521636;
-            mTitle = "Sydney";
-            desc = "Default Description";
-            place = "Sydney";
-
+            lat = 1.278985;
+            longi = 103.8429418;
+            mTitle = "Tigerspike";
+            desc = "Software Company";
+            place = "Singapore";
         }else{
             lat = Double.valueOf(note.getLatitude());
             longi = Double.valueOf(note.getLongitute());
@@ -138,6 +137,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void showClusterMapView(List<Notes> noteList, GoogleMap mMap) {
+
+        // Position the map. (using default location of my current office Tusi) 
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.2950869,103.8419714), 10));
 
         ClusterManager<Notes> mClusterManager = new ClusterManager<>(this, mMap);
         mMap.setOnCameraIdleListener(mClusterManager);
