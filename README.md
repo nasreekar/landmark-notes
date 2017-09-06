@@ -42,6 +42,8 @@ Few of the things that can be either modified or added are:
 1. Edit Note functionality
 2. Better Google signout functionality to show list of all google accounts added in the phone to signIn everytime
 3. Simple validations like checking for Internet availability and displaying an error message.
+4. Color coding of notes
+5. Color coding for pointers (different color for different users)
 
 ## Challenges
 Other things which are new to me but can be implemented are:
