@@ -6,7 +6,7 @@
     <string name="etTitle">Title</string>
     <string name="etDescription">Description</string>
     <string name="tvLocation">Location</string>
-    <string name="tvDate">Date</string>
+    <string name="tvDateText">Date</string>
 
     <string name="btnLogout">Log Out</string>
     <string name="btnAddNote">Add Note</string>
