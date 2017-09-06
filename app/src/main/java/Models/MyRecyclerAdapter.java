@@ -2,18 +2,26 @@ package Models;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abhijith.home.landmark_notes.MapsActivity;
 import com.abhijith.home.landmark_notes.R;
+import com.abhijith.home.landmark_notes.RecyclerNoteListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +36,13 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     private List<Notes> notesList;
     private List<Notes> mFilteredList;
 
+    private Menu context_menu;
+    ActionMode mActionMode;
+    boolean isMultiSelect = false;
+    ArrayList<Notes> multiselect_list = new ArrayList<>();
+    ArrayList<String> multiselect_key_list = new ArrayList<>();
+
+
     public MyRecyclerAdapter(Activity context, List<Notes> notesList) {
         this.context = context;
         this.notesList = notesList;
@@ -37,14 +52,14 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_list_item,parent,false);
+                .inflate(R.layout.recycler_list_item, parent, false);
 
         return new ViewHolder(v);
     }
 
     //Bind the data to the view object
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         final Notes n = mFilteredList.get(position);
         holder.tvListTitle.setText(n.getTitle());
@@ -53,15 +68,60 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context,"You clicked : "+ n.getTitle(),Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(context, MapsActivity.class);
-                intent.putExtra("tag", "single_note");
-                intent.putExtra("serialize_object_data", n);
-                context.startActivity(intent);
+                if (isMultiSelect)
+                    multi_select(position);
+                else {
+                    //Toast.makeText(context,"You clicked : "+ n.getTitle(),Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, MapsActivity.class);
+                    intent.putExtra("tag", "single_note");
+                    intent.putExtra("serialize_object_data", n);
+                    context.startActivity(intent);
+                }
+            }
+        });
+
+        holder.relativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+//                int p=position;
+//                Log.i("LongClick: ",String.valueOf(p));
+//                Toast.makeText(context,"You selected: "+ mFilteredList.get(position).getTitle(), Toast.LENGTH_SHORT ).show();
+//                return true;// returning true instead of false, works for me
+                if (!isMultiSelect) {
+                    multiselect_list = new ArrayList<Notes>();
+                    multiselect_key_list = new ArrayList<String>();
+
+                    isMultiSelect = true;
+
+                    if (mActionMode == null) {
+                        mActionMode = ((RecyclerNoteListActivity) context).startActionMode(mActionModeCallback);
+                    }
+                }
+
+                multi_select(position);
+                return true;
             }
         });
 
     }
+
+    public void multi_select(int position) {
+        if (mActionMode != null) {
+            if (multiselect_list.contains(notesList.get(position)))
+                multiselect_list.remove(notesList.get(position));
+            else
+                multiselect_list.add(notesList.get(position));
+
+            if (multiselect_list.size() > 0)
+                mActionMode.setTitle("" + multiselect_list.size());
+            else
+                mActionMode.setTitle("");
+
+            notifyDataSetChanged();
+
+        }
+    }
+
 
     @Override
     public int getItemCount() {
@@ -107,7 +167,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         };
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvListTitle;
         public TextView tvListDescription;
@@ -116,10 +176,71 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         public ViewHolder(View itemView) {
             super(itemView);
 
-            tvListTitle = (TextView)itemView.findViewById(R.id.tvListTitle);
-            tvListDescription = (TextView)itemView.findViewById(R.id.tvListDescription);
+            tvListTitle = (TextView) itemView.findViewById(R.id.tvListTitle);
+            tvListDescription = (TextView) itemView.findViewById(R.id.tvListDescription);
 
-            relativeLayout = (RelativeLayout)itemView.findViewById(R.id.relativeRecyclerLayout);
+            relativeLayout = (RelativeLayout) itemView.findViewById(R.id.relativeRecyclerLayout);
         }
+    }
+
+    private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            // Inflate a menu resource providing context menu items
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.menu_action_mode, menu);
+            context_menu = menu;
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false; // Return false if nothing is done
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    alertCallToDelete();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mActionMode = null;
+            isMultiSelect = false;
+            multiselect_list = new ArrayList<Notes>();
+            notifyDataSetChanged();
+        }
+    };
+
+    public void alertCallToDelete() {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        alertDialog.setTitle("Delete Confirmation");
+        alertDialog.setMessage("Do you want to delete the selected items");
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (multiselect_list.size() > 0) {
+                            for (int i = 0; i < multiselect_list.size(); i++) {
+                                notesList.remove(multiselect_list.get(i));
+                                ((RecyclerNoteListActivity)context).getDatabase().child(multiselect_list.get(i).getId()).removeValue();
+                            }
+                            notifyDataSetChanged();
+
+                            if (mActionMode != null) {
+                                mActionMode.finish();
+                            }
+                            Toast.makeText(context, "Item(s) Deleted", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+        alertDialog.show();
     }
 }

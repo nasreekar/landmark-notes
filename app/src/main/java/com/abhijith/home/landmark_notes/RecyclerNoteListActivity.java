@@ -89,6 +89,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
                     recyclerView.setAdapter(adapter);
                 }else{
                     defaultText.setVisibility(View.VISIBLE);
+                    pgBar.setVisibility(View.GONE);
                 }
 
             }
@@ -221,5 +222,9 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    public DatabaseReference getDatabase(){
+        return databaseNotes;
     }
 }

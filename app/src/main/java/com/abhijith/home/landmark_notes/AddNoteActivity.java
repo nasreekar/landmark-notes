@@ -179,7 +179,7 @@ public class AddNoteActivity extends AppCompatActivity {
                 latitude = getString(R.string.dfLat);
                 longitude = getString(R.string.dfLon);
             }
-            Notes note = new Notes(heading, desc,userEmail, currentDate, finalLocation, latitude, longitude);
+            Notes note = new Notes(id,heading, desc,userEmail, currentDate, finalLocation, latitude, longitude);
             databaseNotes.child(id).setValue(note);
             Toast.makeText(this, "Note added", Toast.LENGTH_SHORT).show();
             //refreshEditTexts();
