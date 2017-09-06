@@ -130,10 +130,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Position the map. (using default location of my current office Tusi) 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(1.2950869,103.8419714), 10));
 
-        ClusterManager<Notes> mClusterManager = new ClusterManager<>(this, mMap);
+        final ClusterManager<Notes> mClusterManager = new ClusterManager<>(this, mMap);
         mMap.setOnCameraIdleListener(mClusterManager);
         mMap.setOnMarkerClickListener(mClusterManager);
-        mMap.setOnInfoWindowClickListener(mClusterManager);
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener(){
+            @Override
+            public void onInfoWindowClick(Marker marker){
+                AlertDialog alertDialog = new AlertDialog.Builder(MapsActivity.this).create();
+                alertDialog.setTitle("More Details of " + "\""+ marker.getTitle()+"\"");
+                alertDialog.setMessage(marker.getSnippet());
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Got It!",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
         addNoteItemsWhichHasLatLng(mClusterManager, noteList);
         //mClusterManager.addItems(noteList);
         mClusterManager.cluster();

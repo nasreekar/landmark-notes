@@ -44,7 +44,7 @@ public class Notes implements Serializable, ClusterItem{
 
     @Override
     public String getSnippet() {
-        return description;
+        return String.format("%s%n%n%s%s", description, "user: ",email);
     }
 
     public void setTitle(String title) {
