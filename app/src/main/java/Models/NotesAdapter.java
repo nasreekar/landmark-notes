@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.abhijith.home.landmark_notes.MapsActivity;
 import com.abhijith.home.landmark_notes.R;
-import com.abhijith.home.landmark_notes.RecyclerNoteListActivity;
+import com.abhijith.home.landmark_notes.NotesListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.List;
  * Created by home on 31/8/17.
  */
 
-public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.ViewHolder> implements Filterable {
+public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> implements Filterable {
 
     private Activity context;
     private List<Notes> notesList;
@@ -40,10 +40,9 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     ActionMode mActionMode;
     boolean isMultiSelect = false;
     ArrayList<Notes> multiselect_list = new ArrayList<>();
-    ArrayList<String> multiselect_key_list = new ArrayList<>();
 
 
-    public MyRecyclerAdapter(Activity context, List<Notes> notesList) {
+    public NotesAdapter(Activity context, List<Notes> notesList) {
         this.context = context;
         this.notesList = notesList;
         this.mFilteredList = notesList;
@@ -52,7 +51,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycler_list_item, parent, false);
+                .inflate(R.layout.note_list_item, parent, false);
 
         return new ViewHolder(v);
     }
@@ -65,11 +64,12 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
         holder.tvListTitle.setText(n.getTitle());
         holder.tvListDescription.setText(n.getDescription());
 
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+        holder.notesLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isMultiSelect)
-                    multi_select(position);
+                if (isMultiSelect) {
+                    multi_select(position,v);
+                }
                 else {
                     //Toast.makeText(context,"You clicked : "+ n.getTitle(),Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, MapsActivity.class);
@@ -80,42 +80,47 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
             }
         });
 
-        holder.relativeLayout.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.notesLayout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+              //  v.setSelected(true);
 //                int p=position;
 //                Log.i("LongClick: ",String.valueOf(p));
 //                Toast.makeText(context,"You selected: "+ mFilteredList.get(position).getTitle(), Toast.LENGTH_SHORT ).show();
 //                return true;// returning true instead of false, works for me
                 if (!isMultiSelect) {
                     multiselect_list = new ArrayList<Notes>();
-                    multiselect_key_list = new ArrayList<String>();
 
                     isMultiSelect = true;
 
                     if (mActionMode == null) {
-                        mActionMode = ((RecyclerNoteListActivity) context).startActionMode(mActionModeCallback);
+                        mActionMode = ((NotesListActivity) context).startActionMode(mActionModeCallback);
                     }
                 }
 
-                multi_select(position);
+                multi_select(position,v);
                 return true;
             }
         });
 
     }
 
-    public void multi_select(int position) {
+    public void multi_select(int position,View view) {
         if (mActionMode != null) {
-            if (multiselect_list.contains(notesList.get(position)))
+            if (multiselect_list.contains(notesList.get(position))) {
+                view.setSelected(false);
                 multiselect_list.remove(notesList.get(position));
-            else
+            }
+            else {
+                view.setSelected(true);
                 multiselect_list.add(notesList.get(position));
+            }
 
+            //text on action bar
             if (multiselect_list.size() > 0)
                 mActionMode.setTitle("" + multiselect_list.size());
             else
-                mActionMode.setTitle("");
+                mActionMode.finish();
 
             notifyDataSetChanged();
 
@@ -171,7 +176,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
 
         public TextView tvListTitle;
         public TextView tvListDescription;
-        public RelativeLayout relativeLayout;
+        public RelativeLayout notesLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -179,7 +184,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
             tvListTitle = (TextView) itemView.findViewById(R.id.tvListTitle);
             tvListDescription = (TextView) itemView.findViewById(R.id.tvListDescription);
 
-            relativeLayout = (RelativeLayout) itemView.findViewById(R.id.relativeRecyclerLayout);
+            notesLayout = (RelativeLayout) itemView.findViewById(R.id.rlNotes);
         }
     }
 
@@ -230,7 +235,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.Vi
                         if (multiselect_list.size() > 0) {
                             for (int i = 0; i < multiselect_list.size(); i++) {
                                 notesList.remove(multiselect_list.get(i));
-                                ((RecyclerNoteListActivity)context).getDatabase().child(multiselect_list.get(i).getId()).removeValue();
+                                ((NotesListActivity)context).getDatabase().child(multiselect_list.get(i).getId()).removeValue();
                             }
                             notifyDataSetChanged();
 

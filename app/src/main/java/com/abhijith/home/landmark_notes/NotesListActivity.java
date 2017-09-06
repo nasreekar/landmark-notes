@@ -32,10 +32,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import Models.MyRecyclerAdapter;
+import Models.NotesAdapter;
 import Models.Notes;
 
-public class RecyclerNoteListActivity extends AppCompatActivity {
+public class NotesListActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseAuth.AuthStateListener mAuthListener;
@@ -44,7 +44,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
 
 
     private RecyclerView recyclerView;
-    private MyRecyclerAdapter adapter;
+    private NotesAdapter adapter;
 
     private List<Notes> listitems;
     private List<Notes> myListitems;
@@ -85,7 +85,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
                 {
                     defaultText.setVisibility(View.GONE);
                     pgBar.setVisibility(View.GONE);
-                    adapter = new MyRecyclerAdapter(RecyclerNoteListActivity.this,myListitems);
+                    adapter = new NotesAdapter(NotesListActivity.this,myListitems);
                     recyclerView.setAdapter(adapter);
                 }else{
                     defaultText.setVisibility(View.VISIBLE);
@@ -104,7 +104,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recycler_note_list);
+        setContentView(R.layout.activity_note_list);
 
         defaultText = (TextView)findViewById(R.id.rvTextView);
         pgBar = (ProgressBar)findViewById(R.id.progressBar);
@@ -120,7 +120,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() == null){
-                    startActivity(new Intent(RecyclerNoteListActivity.this, LoginActivity.class));
+                    startActivity(new Intent(NotesListActivity.this, LoginActivity.class));
                 }
             }
         };
@@ -146,7 +146,7 @@ public class RecyclerNoteListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_note:
-                startActivity(new Intent(RecyclerNoteListActivity.this, AddNoteActivity.class));
+                startActivity(new Intent(NotesListActivity.this, AddNoteActivity.class));
                 return true;
             case R.id.action_my_geo_notes:
                 Intent myIntent = new Intent(this, MapsActivity.class);
