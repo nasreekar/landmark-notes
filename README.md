@@ -34,7 +34,10 @@ Source must be developed and runnable in  Android Studio .
 2. Google Cluster API (to display all pointers on the map)
 3. Firebase Database
 
-Please check this [Images Folder](https://github.com/nasreekar/landmark-notes/tree/master/Screenshots) for screenshots of the app.
+Please check this [Images Folder](https://github.com/nasreekar/landmark-notes/tree/master/Screenshots) for screenshots of the app and [Video Folder](https://github.com/nasreekar/landmark-notes/tree/master/Video) for a sample video of working model displaying all functionalities.
+
+## Commit History
+Commits are made at regular intervals and all those can be seen [here](https://github.com/nasreekar/landmark-notes/commits/master)
 
 ## Future Updates/Modifications
 Many functionalities can either be added or modified to the current application. 
@@ -49,6 +52,7 @@ Few of the things that can be either modified or added are:
 Other things which are new to me but can be implemented are:
 1. Better Architecture Pattern usage
 2. SOLID principles
+3. Network Calls using Retrofit,RxJava
 
 ## Contribution
 
